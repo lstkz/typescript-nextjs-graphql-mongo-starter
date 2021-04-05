@@ -1,0 +1,14 @@
+type Query {
+  allTodos: [TodoMVC!]!
+  Todo(todoId: ID!): TodoMVC
+}
+
+type Mutation {
+  addNumber(a: Int, b: Int): Int
+}
+
+type TodoMVC {
+  todoId: ID!
+  completed: Boolean!
+  description: String!
+}
