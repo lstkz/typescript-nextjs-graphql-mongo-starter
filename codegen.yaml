@@ -1,0 +1,20 @@
+overwrite: true
+hooks:
+  afterAllFileWrite:
+    - prettier --write
+schema:
+  - ./api/src/schema.graphql
+generates:
+  app/src/generated.tsx:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    documents:
+      - ./app/src/pages/**/*.ts*
+      - ./app/src/components/**/*.ts*
+      - ./app/src/features/**/*.ts*
+  api/src/generated.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers

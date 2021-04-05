@@ -1,0 +1,41 @@
+scalar Void
+
+type Query {
+  me: User!
+  ping: Float!
+  allTodos: [Todo!]!
+}
+
+type Mutation {
+  login(username: String!, password: String!): AuthResult
+  register(values: RegisterInput!): AuthResult
+  addTodo(name: String!): Todo
+  removeTodo(id: String!): Void
+}
+
+type Subscription {
+  todoCreated: Todo!
+  todoRemoved: Todo!
+}
+
+type AuthResult {
+  token: String!
+  user: User!
+}
+
+type User {
+  id: String!
+  username: String!
+}
+
+type Todo {
+  id: ID!
+  userId: ID!
+  name: String!
+}
+
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+}
