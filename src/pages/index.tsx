@@ -1,17 +1,13 @@
 import { gql } from '@apollo/client';
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-// import React from 'react';
-// import {
-//   GetAllTodosDocument,
-//   GetAllTodosQuery,
-//   TodoMvc,
-// } from '../generated/graphql';
-import { getApolloClient } from '../getApolloClient';
 import {
   GetAllTodosDocument,
   GetAllTodosQuery,
   useAddTestMutation,
-} from '../graphql.g';
+  useCreateMessageMutation,
+  useLoginMutation,
+} from '../generated';
+import { getApolloClient } from '../getApolloClient';
 
 gql`
   query GetAllTodos {
@@ -25,6 +21,32 @@ gql`
   mutation addTest($a: Int!, $b: Int!) {
     addNumber(a: $a, b: $b)
   }
+
+  mutation createMessage($data: MessageInput!) {
+    createMessage(data: $data)
+  }
+
+  mutation createMessage2($data: MessageInput!) {
+    createMessage2(data: $data) {
+      id
+      content
+      author
+    }
+  }
+
+  fragment defaultAuthResult on AuthResult {
+    token
+    user {
+      id
+      username
+    }
+  }
+
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ...defaultAuthResult
+    }
+  }
 `;
 
 export default function Home(
@@ -32,6 +54,22 @@ export default function Home(
 ) {
   const { allTodos } = props;
   const [addTest] = useAddTestMutation();
+  const [createMessage] = useCreateMessageMutation();
+  // createMessage({
+  //   variables: {
+  //     data: {
+  //       author: 'aa',
+  //     },
+  //   },
+  // }).then((ret) => {});
+
+  // const [login] = useLoginMutation();
+  // login({
+  //   variables: {
+  //     password: '',
+  //     username: '',
+  //   },
+  // });
 
   return (
     <div>

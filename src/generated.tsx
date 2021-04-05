@@ -1,4 +1,8 @@
-import { GraphQLResolveInfo } from "graphql";
+import {
+  GraphQLResolveInfo,
+  GraphQLScalarType,
+  GraphQLScalarTypeConfig,
+} from "graphql";
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
@@ -21,16 +25,51 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Void: any;
+};
+
+export type AuthResult = {
+  __typename?: "AuthResult";
+  token: Scalars["String"];
+  user?: Maybe<User>;
+};
+
+export type Message = {
+  __typename?: "Message";
+  id: Scalars["String"];
+  content: Scalars["String"];
+  author: Scalars["String"];
+};
+
+export type MessageInput = {
+  content?: Maybe<Scalars["String"]>;
+  author?: Maybe<Scalars["String"]>;
 };
 
 export type Mutation = {
   __typename?: "Mutation";
   addNumber?: Maybe<Scalars["Int"]>;
+  createMessage?: Maybe<Scalars["Void"]>;
+  createMessage2?: Maybe<Message>;
+  login?: Maybe<AuthResult>;
 };
 
 export type MutationAddNumberArgs = {
   a?: Maybe<Scalars["Int"]>;
   b?: Maybe<Scalars["Int"]>;
+};
+
+export type MutationCreateMessageArgs = {
+  data?: Maybe<MessageInput>;
+};
+
+export type MutationCreateMessage2Args = {
+  data?: Maybe<MessageInput>;
+};
+
+export type MutationLoginArgs = {
+  username: Scalars["String"];
+  password: Scalars["String"];
 };
 
 export type Query = {
@@ -43,11 +82,23 @@ export type QueryTodoArgs = {
   todoId: Scalars["ID"];
 };
 
+export type RegisterInput = {
+  username: Scalars["String"];
+  email: Scalars["String"];
+  password: Scalars["String"];
+};
+
 export type TodoMvc = {
   __typename?: "TodoMVC";
   todoId: Scalars["ID"];
   completed: Scalars["Boolean"];
   description: Scalars["String"];
+};
+
+export type User = {
+  __typename?: "User";
+  id: Scalars["String"];
+  username: Scalars["String"];
 };
 
 export type GetAllTodosQueryVariables = Exact<{ [key: string]: never }>;
@@ -70,6 +121,39 @@ export type AddTestMutation = { __typename?: "Mutation" } & Pick<
   Mutation,
   "addNumber"
 >;
+
+export type CreateMessageMutationVariables = Exact<{
+  data: MessageInput;
+}>;
+
+export type CreateMessageMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "createMessage"
+>;
+
+export type CreateMessage2MutationVariables = Exact<{
+  data: MessageInput;
+}>;
+
+export type CreateMessage2Mutation = { __typename?: "Mutation" } & {
+  createMessage2?: Maybe<
+    { __typename?: "Message" } & Pick<Message, "id" | "content" | "author">
+  >;
+};
+
+export type DefaultAuthResultFragment = { __typename?: "AuthResult" } & Pick<
+  AuthResult,
+  "token"
+> & { user?: Maybe<{ __typename?: "User" } & Pick<User, "id" | "username">> };
+
+export type LoginMutationVariables = Exact<{
+  username: Scalars["String"];
+  password: Scalars["String"];
+}>;
+
+export type LoginMutation = { __typename?: "Mutation" } & {
+  login?: Maybe<{ __typename?: "AuthResult" } & DefaultAuthResultFragment>;
+};
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -187,24 +271,55 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  AuthResult: ResolverTypeWrapper<AuthResult>;
+  String: ResolverTypeWrapper<Scalars["String"]>;
+  Message: ResolverTypeWrapper<Message>;
+  MessageInput: MessageInput;
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   Query: ResolverTypeWrapper<{}>;
   ID: ResolverTypeWrapper<Scalars["ID"]>;
+  RegisterInput: RegisterInput;
   TodoMVC: ResolverTypeWrapper<TodoMvc>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
-  String: ResolverTypeWrapper<Scalars["String"]>;
+  User: ResolverTypeWrapper<User>;
+  Void: ResolverTypeWrapper<Scalars["Void"]>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  AuthResult: AuthResult;
+  String: Scalars["String"];
+  Message: Message;
+  MessageInput: MessageInput;
   Mutation: {};
   Int: Scalars["Int"];
   Query: {};
   ID: Scalars["ID"];
+  RegisterInput: RegisterInput;
   TodoMVC: TodoMvc;
   Boolean: Scalars["Boolean"];
-  String: Scalars["String"];
+  User: User;
+  Void: Scalars["Void"];
+};
+
+export type AuthResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["AuthResult"] = ResolversParentTypes["AuthResult"]
+> = {
+  token?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MessageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Message"] = ResolversParentTypes["Message"]
+> = {
+  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<
@@ -216,6 +331,24 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationAddNumberArgs, never>
+  >;
+  createMessage?: Resolver<
+    Maybe<ResolversTypes["Void"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateMessageArgs, never>
+  >;
+  createMessage2?: Resolver<
+    Maybe<ResolversTypes["Message"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateMessage2Args, never>
+  >;
+  login?: Resolver<
+    Maybe<ResolversTypes["AuthResult"]>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginArgs, "username" | "password">
   >;
 };
 
@@ -246,10 +379,28 @@ export type TodoMvcResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
+> = {
+  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export interface VoidScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes["Void"], any> {
+  name: "Void";
+}
+
 export type Resolvers<ContextType = any> = {
+  AuthResult?: AuthResultResolvers<ContextType>;
+  Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   TodoMVC?: TodoMvcResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  Void?: GraphQLScalarType;
 };
 
 /**
@@ -258,6 +409,15 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
+export const DefaultAuthResultFragmentDoc = gql`
+  fragment defaultAuthResult on AuthResult {
+    token
+    user {
+      id
+      username
+    }
+  }
+`;
 export const GetAllTodosDocument = gql`
   query GetAllTodos {
     allTodos {
@@ -360,4 +520,151 @@ export type AddTestMutationResult = Apollo.MutationResult<AddTestMutation>;
 export type AddTestMutationOptions = Apollo.BaseMutationOptions<
   AddTestMutation,
   AddTestMutationVariables
+>;
+export const CreateMessageDocument = gql`
+  mutation createMessage($data: MessageInput!) {
+    createMessage(data: $data)
+  }
+`;
+export type CreateMessageMutationFn = Apollo.MutationFunction<
+  CreateMessageMutation,
+  CreateMessageMutationVariables
+>;
+
+/**
+ * __useCreateMessageMutation__
+ *
+ * To run a mutation, you first call `useCreateMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessageMutation, { data, loading, error }] = useCreateMessageMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateMessageMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateMessageMutation,
+    CreateMessageMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateMessageMutation,
+    CreateMessageMutationVariables
+  >(CreateMessageDocument, options);
+}
+export type CreateMessageMutationHookResult = ReturnType<
+  typeof useCreateMessageMutation
+>;
+export type CreateMessageMutationResult = Apollo.MutationResult<CreateMessageMutation>;
+export type CreateMessageMutationOptions = Apollo.BaseMutationOptions<
+  CreateMessageMutation,
+  CreateMessageMutationVariables
+>;
+export const CreateMessage2Document = gql`
+  mutation createMessage2($data: MessageInput!) {
+    createMessage2(data: $data) {
+      id
+      content
+      author
+    }
+  }
+`;
+export type CreateMessage2MutationFn = Apollo.MutationFunction<
+  CreateMessage2Mutation,
+  CreateMessage2MutationVariables
+>;
+
+/**
+ * __useCreateMessage2Mutation__
+ *
+ * To run a mutation, you first call `useCreateMessage2Mutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMessage2Mutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMessage2Mutation, { data, loading, error }] = useCreateMessage2Mutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateMessage2Mutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateMessage2Mutation,
+    CreateMessage2MutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateMessage2Mutation,
+    CreateMessage2MutationVariables
+  >(CreateMessage2Document, options);
+}
+export type CreateMessage2MutationHookResult = ReturnType<
+  typeof useCreateMessage2Mutation
+>;
+export type CreateMessage2MutationResult = Apollo.MutationResult<CreateMessage2Mutation>;
+export type CreateMessage2MutationOptions = Apollo.BaseMutationOptions<
+  CreateMessage2Mutation,
+  CreateMessage2MutationVariables
+>;
+export const LoginDocument = gql`
+  mutation login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+      ...defaultAuthResult
+    }
+  }
+  ${DefaultAuthResultFragmentDoc}
+`;
+export type LoginMutationFn = Apollo.MutationFunction<
+  LoginMutation,
+  LoginMutationVariables
+>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      username: // value for 'username'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    LoginMutation,
+    LoginMutationVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(
+    LoginDocument,
+    options
+  );
+}
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<
+  LoginMutation,
+  LoginMutationVariables
 >;

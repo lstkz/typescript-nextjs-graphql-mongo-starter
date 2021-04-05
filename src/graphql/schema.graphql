@@ -1,3 +1,5 @@
+scalar Void
+
 type Query {
   allTodos: [TodoMVC!]!
   Todo(todoId: ID!): TodoMVC
@@ -5,10 +7,40 @@ type Query {
 
 type Mutation {
   addNumber(a: Int, b: Int): Int
+  createMessage(data: MessageInput): Void
+  createMessage2(data: MessageInput): Message
+  login(username: String!, password: String!): AuthResult
+}
+
+type AuthResult {
+  token: String!
+  user: User
+}
+
+type User {
+  id: String!
+  username: String!
 }
 
 type TodoMVC {
   todoId: ID!
   completed: Boolean!
   description: String!
+}
+
+input MessageInput {
+  content: String
+  author: String
+}
+
+input RegisterInput {
+  username: String!
+  email: String!
+  password: String!
+}
+
+type Message {
+  id: String!
+  content: String!
+  author: String!
 }

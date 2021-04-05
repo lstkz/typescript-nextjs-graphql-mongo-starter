@@ -1,5 +1,5 @@
-import { TodoMvc } from '../generated/graphql';
-import { Resolvers } from '../generated/resolvers';
+import deepMerge from 'deepmerge';
+import { Resolvers, TodoMvc } from '../../generated';
 
 const store: TodoMvc[] = [
   {
@@ -14,7 +14,7 @@ const store: TodoMvc[] = [
   },
 ];
 
-export const resolvers: Resolvers = {
+const base: Resolvers = {
   Query: {
     allTodos: () => {
       if (Math.random() > 0.5) {
@@ -22,7 +22,6 @@ export const resolvers: Resolvers = {
       }
       return store;
     },
-    Todo: (_: any, { todoId }) => store.find((d) => d.todoId === todoId),
   },
   Mutation: {
     addNumber: async (_, { a, b }) => {
@@ -33,3 +32,8 @@ export const resolvers: Resolvers = {
     },
   },
 };
+
+export const resolvers: Resolvers = deepMerge(
+  base,
+  require('./auth').resolvers
+);
