@@ -6,6 +6,11 @@ import { resolvers } from './resolvers';
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    return {
+      user: null,
+    };
+  },
 });
 
 async function start(req: any, res: any) {
