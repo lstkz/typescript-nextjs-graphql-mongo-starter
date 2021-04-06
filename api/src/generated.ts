@@ -2,7 +2,7 @@ import {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
-} from "graphql";
+} from 'graphql';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -26,76 +26,65 @@ export type Scalars = {
 };
 
 export type AuthResult = {
-  __typename?: "AuthResult";
-  token: Scalars["String"];
+  __typename?: 'AuthResult';
+  token: Scalars['String'];
   user?: Maybe<User>;
 };
 
 export type Message = {
-  __typename?: "Message";
-  id: Scalars["String"];
-  content: Scalars["String"];
-  author: Scalars["String"];
+  __typename?: 'Message';
+  id: Scalars['String'];
+  content: Scalars['String'];
+  author: Scalars['String'];
 };
 
 export type MessageInput = {
-  content?: Maybe<Scalars["String"]>;
-  author?: Maybe<Scalars["String"]>;
+  content?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
 };
 
 export type Mutation = {
-  __typename?: "Mutation";
-  addNumber?: Maybe<Scalars["Int"]>;
-  createMessage?: Maybe<Scalars["Void"]>;
-  createMessage2?: Maybe<Message>;
+  __typename?: 'Mutation';
   login?: Maybe<AuthResult>;
-};
-
-export type MutationAddNumberArgs = {
-  a?: Maybe<Scalars["Int"]>;
-  b?: Maybe<Scalars["Int"]>;
-};
-
-export type MutationCreateMessageArgs = {
-  data?: Maybe<MessageInput>;
-};
-
-export type MutationCreateMessage2Args = {
-  data?: Maybe<MessageInput>;
+  register?: Maybe<AuthResult>;
 };
 
 export type MutationLoginArgs = {
-  username: Scalars["String"];
-  password: Scalars["String"];
+  username: Scalars['String'];
+  password: Scalars['String'];
+};
+
+export type MutationRegisterArgs = {
+  values: RegisterInput;
 };
 
 export type Query = {
-  __typename?: "Query";
+  __typename?: 'Query';
   allTodos: Array<TodoMvc>;
   Todo?: Maybe<TodoMvc>;
 };
 
 export type QueryTodoArgs = {
-  todoId: Scalars["ID"];
+  todoId: Scalars['ID'];
 };
 
 export type RegisterInput = {
-  username: Scalars["String"];
-  email: Scalars["String"];
-  password: Scalars["String"];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type TodoMvc = {
-  __typename?: "TodoMVC";
-  todoId: Scalars["ID"];
-  completed: Scalars["Boolean"];
-  description: Scalars["String"];
+  __typename?: 'TodoMVC';
+  todoId: Scalars['ID'];
+  completed: Scalars['Boolean'];
+  description: Scalars['String'];
 };
 
 export type User = {
-  __typename?: "User";
-  id: Scalars["String"];
-  username: Scalars["String"];
+  __typename?: 'User';
+  id: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -215,125 +204,111 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   AuthResult: ResolverTypeWrapper<AuthResult>;
-  String: ResolverTypeWrapper<Scalars["String"]>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Message: ResolverTypeWrapper<Message>;
   MessageInput: MessageInput;
   Mutation: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars["Int"]>;
   Query: ResolverTypeWrapper<{}>;
-  ID: ResolverTypeWrapper<Scalars["ID"]>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   RegisterInput: RegisterInput;
   TodoMVC: ResolverTypeWrapper<TodoMvc>;
-  Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   User: ResolverTypeWrapper<User>;
-  Void: ResolverTypeWrapper<Scalars["Void"]>;
+  Void: ResolverTypeWrapper<Scalars['Void']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AuthResult: AuthResult;
-  String: Scalars["String"];
+  String: Scalars['String'];
   Message: Message;
   MessageInput: MessageInput;
   Mutation: {};
-  Int: Scalars["Int"];
   Query: {};
-  ID: Scalars["ID"];
+  ID: Scalars['ID'];
   RegisterInput: RegisterInput;
   TodoMVC: TodoMvc;
-  Boolean: Scalars["Boolean"];
+  Boolean: Scalars['Boolean'];
   User: User;
-  Void: Scalars["Void"];
+  Void: Scalars['Void'];
 };
 
 export type AuthResultResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["AuthResult"] = ResolversParentTypes["AuthResult"]
+  ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']
 > = {
-  token?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes["User"]>, ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MessageResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Message"] = ResolversParentTypes["Message"]
+  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
 > = {
-  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  content?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  author?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  author?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
+  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  addNumber?: Resolver<
-    Maybe<ResolversTypes["Int"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationAddNumberArgs, never>
-  >;
-  createMessage?: Resolver<
-    Maybe<ResolversTypes["Void"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateMessageArgs, never>
-  >;
-  createMessage2?: Resolver<
-    Maybe<ResolversTypes["Message"]>,
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateMessage2Args, never>
-  >;
   login?: Resolver<
-    Maybe<ResolversTypes["AuthResult"]>,
+    Maybe<ResolversTypes['AuthResult']>,
     ParentType,
     ContextType,
-    RequireFields<MutationLoginArgs, "username" | "password">
+    RequireFields<MutationLoginArgs, 'username' | 'password'>
+  >;
+  register?: Resolver<
+    Maybe<ResolversTypes['AuthResult']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRegisterArgs, 'values'>
   >;
 };
 
 export type QueryResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
+  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   allTodos?: Resolver<
-    Array<ResolversTypes["TodoMVC"]>,
+    Array<ResolversTypes['TodoMVC']>,
     ParentType,
     ContextType
   >;
   Todo?: Resolver<
-    Maybe<ResolversTypes["TodoMVC"]>,
+    Maybe<ResolversTypes['TodoMVC']>,
     ParentType,
     ContextType,
-    RequireFields<QueryTodoArgs, "todoId">
+    RequireFields<QueryTodoArgs, 'todoId'>
   >;
 };
 
 export type TodoMvcResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["TodoMVC"] = ResolversParentTypes["TodoMVC"]
+  ParentType extends ResolversParentTypes['TodoMVC'] = ResolversParentTypes['TodoMVC']
 > = {
-  todoId?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
-  completed?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  todoId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["User"] = ResolversParentTypes["User"]
+  ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']
 > = {
-  id?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
-  username?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export interface VoidScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes["Void"], any> {
-  name: "Void";
+  extends GraphQLScalarTypeConfig<ResolversTypes['Void'], any> {
+  name: 'Void';
 }
 
 export type Resolvers<ContextType = any> = {

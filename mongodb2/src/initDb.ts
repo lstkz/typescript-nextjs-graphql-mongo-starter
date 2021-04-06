@@ -1,6 +1,7 @@
 import { MongoClient, MongoClientOptions, TransactionOptions } from 'mongodb';
 import fs from 'fs';
 import * as R from 'remeda';
+import Path from 'path';
 import { initCreateCollection } from './createCollection';
 import { dbSessionStorage } from './dbSessionStorage';
 import { DbCollection } from './types';
@@ -9,13 +10,13 @@ export interface InitOptions {
   uri: string;
   dbName?: string;
   options?: MongoClientOptions | undefined;
-  baseDirectory: string;
+  // baseDirectory: string;
+  collections: () => any[];
 }
 
-export function initMongodb2(options: InitOptions) {
+export function initDb(options: InitOptions) {
   let client: MongoClient | null = null;
   let isCreated = false;
-
   const createCollections = async () => {
     if (isCreated) {
       return;
@@ -81,8 +82,8 @@ export function initMongodb2(options: InitOptions) {
 
   const getAllCollection = (): Array<DbCollection<any>> => {
     return R.pipe(
-      fs.readdirSync(options.baseDirectory),
-      R.map((name) => Object.values(require('./collections/' + name))),
+      options.collections(),
+      R.map(item => Object.values(item)),
       R.flatten
     ) as any;
   };

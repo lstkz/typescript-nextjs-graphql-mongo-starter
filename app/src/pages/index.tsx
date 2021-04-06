@@ -18,21 +18,21 @@ gql`
     }
   }
 
-  mutation addTest($a: Int!, $b: Int!) {
-    addNumber(a: $a, b: $b)
-  }
+  # mutation addTest($a: Int!, $b: Int!) {
+  #   addNumber(a: $a, b: $b)
+  # }
 
-  mutation createMessage($data: MessageInput!) {
-    createMessage(data: $data)
-  }
+  # mutation createMessage($data: MessageInput!) {
+  #   createMessage(data: $data)
+  # }
 
-  mutation createMessage2($data: MessageInput!) {
-    createMessage2(data: $data) {
-      id
-      content
-      author
-    }
-  }
+  # mutation createMessage2($data: MessageInput!) {
+  #   createMessage2(data: $data) {
+  #     id
+  #     content
+  #     author
+  #   }
+  # }
 
   fragment defaultAuthResult on AuthResult {
     token
@@ -81,17 +81,17 @@ export default function Home(
               b: 2,
             },
           })
-            .then((ret) => {
+            .then(ret => {
               console.log(ret.data.addNumber);
             })
-            .catch((e) => {
+            .catch(e => {
               alert(e.message);
             });
         }}
       >
         click
       </button>
-      {allTodos.map((todo) => (
+      {allTodos.map(todo => (
         <div key={todo.todoId}>{todo.description}</div>
       ))}
     </div>

@@ -25,14 +25,7 @@ const base: Resolvers = {
       return store;
     },
   },
-  Mutation: {
-    addNumber: async (_, { a, b }) => {
-      if (Math.random() > 0.5) {
-        throw new Error('Mock error3');
-      }
-      return a + b;
-    },
-  },
+  Mutation: {},
 };
 
 export const resolvers: Resolvers = deepMerge(

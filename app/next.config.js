@@ -1,4 +1,4 @@
-const withTM = require('next-transpile-modules')(['api']);
+const withTM = require('next-transpile-modules')(['api', 'mongodb2']);
 
 module.exports = withTM({
   webpack: (config, options) => {

@@ -6,10 +6,8 @@ type Query {
 }
 
 type Mutation {
-  addNumber(a: Int, b: Int): Int
-  createMessage(data: MessageInput): Void
-  createMessage2(data: MessageInput): Message
   login(username: String!, password: String!): AuthResult
+  register(values: RegisterInput!): AuthResult
 }
 
 type AuthResult {

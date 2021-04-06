@@ -2,7 +2,6 @@
   "name": "mongodb2",
   "version": "0.0.1",
   "scripts": {},
-  "index": "src/index.ts",
   "dependencies": {
     "@types/mongodb": "^3.6.12",
     "mongodb": "^3.6.5",

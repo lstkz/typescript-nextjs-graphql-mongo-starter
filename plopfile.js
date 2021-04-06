@@ -19,6 +19,13 @@ module.exports = function generate(plop) {
       },
     ],
   });
+
+  plop.setActionType('addToDbFile', function (answers, config, plop) {
+    console.log({
+      answers,
+    });
+  });
+
   plop.setGenerator('collection', {
     prompts: [
       {
@@ -31,12 +38,16 @@ module.exports = function generate(plop) {
     actions: [
       {
         type: 'addMany',
-        destination: path.join(__dirname, 'apps/api/src/collections'),
+        destination: path.join(__dirname, 'api/src/collections'),
         base: '.blueprints/collection',
         templateFiles: '.blueprints/collection/**/**',
       },
+      {
+        type: 'addToDbFile',
+      },
     ],
   });
+
   plop.setGenerator('module', {
     prompts: [
       {
@@ -49,7 +60,7 @@ module.exports = function generate(plop) {
     actions: [
       {
         type: 'addMany',
-        destination: path.join(__dirname, 'apps/front/src/components'),
+        destination: path.join(__dirname, 'app/src/components'),
         base: '.blueprints/module',
         templateFiles: '.blueprints/module/**/**',
       },
