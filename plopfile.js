@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function generate(plop) {
   plop.setGenerator('feature', {
@@ -21,9 +22,14 @@ module.exports = function generate(plop) {
   });
 
   plop.setActionType('addToDbFile', function (answers, config, plop) {
-    console.log({
-      answers,
-    });
+    const dbFilePath = path.join(__dirname, 'api/src/db.ts');
+    let dbFile = fs.readFileSync(dbFilePath, 'utf8');
+    dbFile = dbFile.replace(
+      / *\/\/ APPEND/,
+      `    require('./collections/${answers.name}')\n$&`
+    );
+    console.log(dbFile);
+    fs.writeFileSync(dbFilePath, dbFile);
   });
 
   plop.setGenerator('collection', {
