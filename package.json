@@ -1,39 +1,15 @@
 {
   "name": "typescript-nextjs-graphql-mongo-starter",
-  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "generate": "graphql-codegen",
-    "g": "yarn run generate"
-  },
+  "scripts": {},
+  "workspaces": [
+    "api",
+    "app"
+  ],
   "dependencies": {
-    "@apollo/client": "^3.3.13",
-    "@apollo/react-components": "^4.0.0",
-    "@graphql-codegen/cli": "^1.21.3",
-    "@graphql-codegen/import-types-preset": "^1.18.1",
-    "@graphql-codegen/typescript": "^1.21.1",
-    "@graphql-codegen/typescript-operations": "^1.17.15",
-    "@graphql-codegen/typescript-react-apollo": "^2.2.3",
-    "@graphql-codegen/typescript-resolvers": "^1.19.0",
-    "apollo-server-micro": "^2.22.2",
-    "deepmerge": "^4.2.2",
-    "graphql": "^15.5.0",
-    "graphql-codegen-apollo-next-ssr": "^1.5.6",
-    "graphql-import-node": "^0.0.4",
-    "next": "10.1.3",
-    "node-fetch": "^2.6.1",
-    "prettier": "^2.2.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "remeda": "^0.0.27",
-    "webpack-graphql-loader": "^1.0.2"
-  },
-  "devDependencies": {
     "@types/node": "^14.14.37",
-    "@types/react": "^17.0.3",
-    "typescript": "^4.2.3"
-  }
+    "typescript": "^4.2.3",
+    "prettier": "^2.2.1"
+  },
+  "devDependencies": {}
 }

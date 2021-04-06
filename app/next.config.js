@@ -1,4 +1,6 @@
-module.exports = {
+const withTM = require('next-transpile-modules')(['api']);
+
+module.exports = withTM({
   webpack: (config, options) => {
     config.module.rules.push({
       test: /\.graphql?$/,
@@ -7,4 +9,4 @@ module.exports = {
 
     return config;
   },
-};
+});

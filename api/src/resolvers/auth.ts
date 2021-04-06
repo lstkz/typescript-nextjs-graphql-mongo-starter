@@ -1,5 +1,6 @@
 import { ValidationError } from 'apollo-server-errors';
-import { Resolvers } from '../../generated';
+
+type Resolvers = any;
 
 export const resolvers: Resolvers = {
   Mutation: {

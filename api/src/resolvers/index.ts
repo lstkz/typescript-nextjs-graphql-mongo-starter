@@ -1,5 +1,7 @@
 import deepMerge from 'deepmerge';
-import { Resolvers, TodoMvc } from '../../generated';
+
+type Resolvers = any;
+type TodoMvc = any;
 
 const store: TodoMvc[] = [
   {
@@ -18,7 +20,7 @@ const base: Resolvers = {
   Query: {
     allTodos: () => {
       if (Math.random() > 0.5) {
-        throw new Error('Mock error');
+        throw new Error('Mock error2');
       }
       return store;
     },
@@ -26,7 +28,7 @@ const base: Resolvers = {
   Mutation: {
     addNumber: async (_, { a, b }) => {
       if (Math.random() > 0.5) {
-        throw new Error('Mock error');
+        throw new Error('Mock error3');
       }
       return a + b;
     },
