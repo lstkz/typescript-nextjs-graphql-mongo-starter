@@ -5,8 +5,9 @@ import { useImmer, createModuleContext, useActions } from 'context-api';
 import {
   Get{{name}}Document,
   Get{{name}}Query,
-} from '../generated';
-import { getApolloClient } from '../getApolloClient';
+} from '../../generated';
+import { getApolloClient } from '../../getApolloClient';
+import { {{name}}Page } from './{{name}}Page';
 
 interface Actions {
   test: () => void;
@@ -17,13 +18,9 @@ interface State {
 }
 
 const [Provider, useContext] = createModuleContext<State, Actions>();
-
-export interface {{name}}Props extends {{name}}SSRProps {
-  children: React.ReactNode;
-}
-
-export function {{name}}Module(props: {{name}}Props) {
-  const { children } = props;
+ 
+export function {{name}}Module(props: {{name}}SSRProps) {
+  const { } = props;
   const [state, setState, getState] = useImmer<State>({
     foo: false 
   },
@@ -35,7 +32,7 @@ export function {{name}}Module(props: {{name}}Props) {
 
   return ( 
     <Provider state={state} actions={actions}>
-      {children}
+      <{{name}}Page />
     </Provider>
   );
 }
@@ -49,7 +46,7 @@ export function use{{name}}State() {
 }
 
 
-export type {{name}}SSRProps = InferGetServerSidePropsType<typeof getServerSideProps>
+export type {{name}}SSRProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 gql`
   query Get{{name}} {

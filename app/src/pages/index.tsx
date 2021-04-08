@@ -9,11 +9,7 @@ import { getApolloClient } from '../getApolloClient';
 
 gql`
   query GetAllTodos {
-    allTodos {
-      todoId
-      completed
-      description
-    }
+    ping
   }
 
   # mutation addTest($a: Int!, $b: Int!) {
@@ -50,7 +46,7 @@ gql`
 export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const { allTodos } = props;
+  // const { allTodos } = props;
   // const [addTest] = useAddTestMutation();
   // const [createMessage] = useCreateMessageMutation();
   // createMessage({
@@ -89,9 +85,9 @@ export default function Home(
       >
         click
       </button>
-      {allTodos.map(todo => (
+      {/* {allTodos.map(todo => (
         <div key={todo.todoId}>{todo.description}</div>
-      ))}
+      ))} */}
     </div>
   );
 }

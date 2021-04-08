@@ -8,5 +8,6 @@ export const resolvers: Resolvers = {
       context.ensureLoggedIn();
       return mapUser(context.user);
     },
+    ping: () => Date.now(),
   },
 };

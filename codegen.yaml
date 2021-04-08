@@ -13,6 +13,7 @@ generates:
     documents:
       - ./app/src/pages/**/*.ts*
       - ./app/src/components/**/*.ts*
+      - ./app/src/features/**/*.ts*
   api/src/generated.ts:
     plugins:
       - typescript

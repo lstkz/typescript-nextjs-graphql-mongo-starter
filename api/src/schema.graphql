@@ -2,6 +2,7 @@ scalar Void
 
 type Query {
   me: User!
+  ping: Float!
 }
 
 type Mutation {

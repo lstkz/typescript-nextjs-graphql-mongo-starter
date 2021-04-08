@@ -54,13 +54,8 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  allTodos: Array<TodoMvc>;
-  Todo?: Maybe<TodoMvc>;
   me: User;
-};
-
-export type QueryTodoArgs = {
-  todoId: Scalars['ID'];
+  ping: Scalars['Float'];
 };
 
 export type RegisterInput = {
@@ -82,16 +77,13 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type GetTestQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTestQuery = { __typename?: 'Query' } & Pick<Query, 'ping'>;
+
 export type GetAllTodosQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAllTodosQuery = { __typename?: 'Query' } & {
-  allTodos: Array<
-    { __typename?: 'TodoMVC' } & Pick<
-      TodoMvc,
-      'todoId' | 'completed' | 'description'
-    >
-  >;
-};
+export type GetAllTodosQuery = { __typename?: 'Query' } & Pick<Query, 'ping'>;
 
 export type DefaultAuthResultFragment = { __typename?: 'AuthResult' } & Pick<
   AuthResult,
@@ -116,13 +108,54 @@ export const DefaultAuthResultFragmentDoc = gql`
     }
   }
 `;
+export const GetTestDocument = gql`
+  query GetTest {
+    ping
+  }
+`;
+
+/**
+ * __useGetTestQuery__
+ *
+ * To run a query within a React component, call `useGetTestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTestQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTestQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetTestQuery, GetTestQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTestQuery, GetTestQueryVariables>(
+    GetTestDocument,
+    options
+  );
+}
+export function useGetTestLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<GetTestQuery, GetTestQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTestQuery, GetTestQueryVariables>(
+    GetTestDocument,
+    options
+  );
+}
+export type GetTestQueryHookResult = ReturnType<typeof useGetTestQuery>;
+export type GetTestLazyQueryHookResult = ReturnType<typeof useGetTestLazyQuery>;
+export type GetTestQueryResult = Apollo.QueryResult<
+  GetTestQuery,
+  GetTestQueryVariables
+>;
 export const GetAllTodosDocument = gql`
   query GetAllTodos {
-    allTodos {
-      todoId
-      completed
-      description
-    }
+    ping
   }
 `;
 

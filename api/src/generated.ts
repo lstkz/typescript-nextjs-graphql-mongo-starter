@@ -60,13 +60,8 @@ export type MutationRegisterArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  allTodos: Array<TodoMvc>;
-  Todo?: Maybe<TodoMvc>;
   me: User;
-};
-
-export type QueryTodoArgs = {
-  todoId: Scalars['ID'];
+  ping: Scalars['Float'];
 };
 
 export type RegisterInput = {
@@ -210,9 +205,10 @@ export type ResolversTypes = {
   MessageInput: MessageInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
   RegisterInput: RegisterInput;
   TodoMVC: ResolverTypeWrapper<TodoMvc>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   User: ResolverTypeWrapper<User>;
   Void: ResolverTypeWrapper<Scalars['Void']>;
@@ -226,9 +222,10 @@ export type ResolversParentTypes = {
   MessageInput: MessageInput;
   Mutation: {};
   Query: {};
-  ID: Scalars['ID'];
+  Float: Scalars['Float'];
   RegisterInput: RegisterInput;
   TodoMVC: TodoMvc;
+  ID: Scalars['ID'];
   Boolean: Scalars['Boolean'];
   User: User;
   Void: Scalars['Void'];
@@ -275,18 +272,8 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
-  allTodos?: Resolver<
-    Array<ResolversTypes['TodoMVC']>,
-    ParentType,
-    ContextType
-  >;
-  Todo?: Resolver<
-    Maybe<ResolversTypes['TodoMVC']>,
-    ParentType,
-    ContextType,
-    RequireFields<QueryTodoArgs, 'todoId'>
-  >;
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  ping?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
 };
 
 export type TodoMvcResolvers<

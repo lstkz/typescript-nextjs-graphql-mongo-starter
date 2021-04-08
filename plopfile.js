@@ -28,6 +28,12 @@ module.exports = function generate(plop) {
         message: 'choose feature name in camelCase (e.g. myFeature)',
         basePath: '.',
       },
+      {
+        type: 'input',
+        name: 'page',
+        message: 'choose page name in dash-case (e.g. my-page)',
+        basePath: '.',
+      },
     ],
     actions: [
       {
@@ -35,6 +41,12 @@ module.exports = function generate(plop) {
         destination: path.join(__dirname, 'app/src/features'),
         base: '.blueprints/feature',
         templateFiles: '.blueprints/feature/**/**',
+      },
+      {
+        type: 'addMany',
+        destination: path.join(__dirname, 'app/src/pages'),
+        base: '.blueprints/page',
+        templateFiles: '.blueprints/page/**/**',
       },
     ],
   });
