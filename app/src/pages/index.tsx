@@ -3,8 +3,6 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
 import {
   GetAllTodosDocument,
   GetAllTodosQuery,
-  useAddTestMutation,
-  useCreateMessageMutation,
   useLoginMutation,
 } from '../generated';
 import { getApolloClient } from '../getApolloClient';
@@ -53,8 +51,8 @@ export default function Home(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const { allTodos } = props;
-  const [addTest] = useAddTestMutation();
-  const [createMessage] = useCreateMessageMutation();
+  // const [addTest] = useAddTestMutation();
+  // const [createMessage] = useCreateMessageMutation();
   // createMessage({
   //   variables: {
   //     data: {
@@ -75,18 +73,18 @@ export default function Home(
     <div>
       <button
         onClick={() => {
-          addTest({
-            variables: {
-              a: 2,
-              b: 2,
-            },
-          })
-            .then(ret => {
-              console.log(ret.data.addNumber);
-            })
-            .catch(e => {
-              alert(e.message);
-            });
+          // addTest({
+          //   variables: {
+          //     a: 2,
+          //     b: 2,
+          //   },
+          // })
+          //   .then(ret => {
+          //     console.log(ret.data.addNumber);
+          //   })
+          //   .catch(e => {
+          //     alert(e.message);
+          //   });
         }}
       >
         click

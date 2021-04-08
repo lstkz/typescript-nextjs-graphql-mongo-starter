@@ -2,13 +2,15 @@ import { ObjectID } from 'mongodb';
 import bcrypt from 'bcryptjs';
 import { ValidationError } from 'apollo-server-errors';
 import { UserCollection, UserModel } from '../collections/User';
-import { AuthResult, Resolvers } from '../generated';
+import { AuthResult } from '../generated';
+import { Resolvers } from '../types';
 import { randomUniqString } from '../common/helper';
 import {
   AccessTokenCollection,
   AccessTokenModel,
 } from '../collections/AccessToken';
 import { AuthenticationError } from 'apollo-server-micro';
+import { mapUser } from '../common/mapper';
 
 async function _createAuthData(user: UserModel): Promise<AuthResult> {
   const accessToken: AccessTokenModel = {
@@ -18,10 +20,7 @@ async function _createAuthData(user: UserModel): Promise<AuthResult> {
   await AccessTokenCollection.insertOne(accessToken);
   return {
     token: accessToken._id,
-    user: {
-      id: user._id.toHexString(),
-      username: user.username,
-    },
+    user: mapUser(user),
   };
 }
 
@@ -32,11 +31,11 @@ export const resolvers: Resolvers = {
       if (!existing) {
         throw new AuthenticationError('Invalid credentials');
       }
-      const isCorrectPassword = await bcrypt.compare(
+      const isPasswordCorrect = await bcrypt.compare(
         password,
         existing.password
       );
-      if (!isCorrectPassword) {
+      if (!isPasswordCorrect) {
         throw new AuthenticationError('Invalid credentials');
       }
       return _createAuthData(existing);

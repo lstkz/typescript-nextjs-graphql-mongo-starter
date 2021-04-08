@@ -10,6 +10,7 @@
     "@apollo/client": "^3.3.13",
     "@apollo/react-components": "^4.0.0",
     "api": "*",
+    "context-api": "*",
     "next": "10.1.3",
     "next-transpile-modules": "^6.4.0",
     "node-fetch": "^2.6.1",

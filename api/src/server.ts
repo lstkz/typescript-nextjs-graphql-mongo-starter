@@ -1,37 +1,35 @@
-import { ApolloServer } from 'apollo-server-micro';
+import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
 import 'graphql-import-node';
 import util from 'util';
 import typeDefs from './schema.graphql';
 import { resolvers } from './resolvers';
 import { connect } from './db';
-
-const myPlugin = {
-  // Fires whenever a GraphQL request is received from a client.
-  requestDidStart(requestContext) {
-    console.log('Request started! Query:\n' + requestContext.request.query);
-
-    return {
-      // Fires whenever Apollo Server will parse a GraphQL
-      // request to create its associated document AST.
-      parsingDidStart(requestContext) {
-        console.log('Parsing started!');
-      },
-
-      // Fires whenever Apollo Server will validate a
-      // request's document AST against your GraphQL schema.
-      validationDidStart(requestContext) {
-        console.log('Validation started!');
-      },
-    };
-  },
-};
+import { AppContext } from './types';
+import { UserCollection, UserModel } from './collections/User';
+import { MicroRequest } from 'apollo-server-micro/dist/types';
+import { ServerResponse } from 'http';
+import { AccessTokenCollection } from './collections/AccessToken';
 
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  context: async ({ req }) => {
+  context: async ({ req }: { req: MicroRequest }): Promise<AppContext> => {
+    const token = req.headers['authorization'];
+    let user: UserModel = null;
+    if (token) {
+      const existing = await AccessTokenCollection.findById(token);
+      if (!existing) {
+        throw new AuthenticationError('Invalid access token');
+      }
+      user = await UserCollection.findByIdOrThrow(existing.userId);
+    }
     return {
-      user: null,
+      user,
+      ensureLoggedIn: () => {
+        if (!user) {
+          throw new AuthenticationError('Access token required');
+        }
+      },
     };
   },
   formatError: err => {
@@ -49,7 +47,7 @@ async function init() {
   isInited = true;
 }
 
-async function start(req: any, res: any) {
+async function start(req: MicroRequest, res: ServerResponse) {
   await init();
   return apolloServer.createHandler({ path: '/api/graphql' })(req, res);
 }

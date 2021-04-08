@@ -62,6 +62,7 @@ export type Query = {
   __typename?: 'Query';
   allTodos: Array<TodoMvc>;
   Todo?: Maybe<TodoMvc>;
+  me: User;
 };
 
 export type QueryTodoArgs = {
@@ -285,6 +286,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryTodoArgs, 'todoId'>
   >;
+  me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 };
 
 export type TodoMvcResolvers<

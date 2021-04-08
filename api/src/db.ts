@@ -1,5 +1,5 @@
-import path from 'path';
 import { initDb } from 'mongodb2';
+import { MONGODB_DB_NAME, MONGODB_URI } from './config';
 
 export const { createCollection, connect, withTransaction } = initDb({
   collections: () => [
@@ -7,6 +7,6 @@ export const { createCollection, connect, withTransaction } = initDb({
     require('./collections/User'),
     // APPEND
   ],
-  uri: process.env.MONGODB_URI ?? 'mongodb://localhost:27017',
-  dbName: process.env.MONGODB_DB_NAME ?? 'app',
+  uri: MONGODB_URI,
+  dbName: MONGODB_DB_NAME,
 });

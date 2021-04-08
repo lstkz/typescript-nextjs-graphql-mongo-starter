@@ -56,6 +56,7 @@ export type Query = {
   __typename?: 'Query';
   allTodos: Array<TodoMvc>;
   Todo?: Maybe<TodoMvc>;
+  me: User;
 };
 
 export type QueryTodoArgs = {

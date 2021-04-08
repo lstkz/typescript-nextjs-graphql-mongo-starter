@@ -1,5 +1,12 @@
 import React from 'react';
+import { gql } from '@apollo/client';
+import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
 import { useImmer, createModuleContext, useActions } from 'context-api';
+import {
+  Get{{name}}Document,
+  Get{{name}}Query,
+} from '../generated';
+import { getApolloClient } from '../getApolloClient';
 
 interface Actions {
   test: () => void;
@@ -11,7 +18,7 @@ interface State {
 
 const [Provider, useContext] = createModuleContext<State, Actions>();
 
-export interface {{name}}Props {
+export interface {{name}}Props extends {{name}}SSRProps {
   children: React.ReactNode;
 }
 
@@ -40,3 +47,24 @@ export function use{{name}}Actions() {
 export function use{{name}}State() {
   return useContext().state;
 }
+
+
+export type {{name}}SSRProps = InferGetServerSidePropsType<typeof getServerSideProps>
+
+gql`
+  query Get{{name}} {
+    allTodos {
+      todoId
+    }
+  }
+`;
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const client = getApolloClient(ctx);
+  const ret = await client.query<Get{{name}}Query>({
+    query: Get{{name}}Document,
+  });
+  return {
+    props: ret.data,
+  };
+};

@@ -4,39 +4,40 @@ import { useImmer, createModuleContext, useActions } from 'context-api';
 interface Actions {
   test: () => void;
 }
- 
+
 interface State {
-  foo: boolean; 
+  foo: boolean;
 }
 
 const [Provider, useContext] = createModuleContext<State, Actions>();
 
-export interface {{name}}Props {
+export interface AuthProps {
   children: React.ReactNode;
 }
 
-export function {{name}}Module(props: {{name}}Props) {
+export function AuthModule(props: AuthProps) {
   const { children } = props;
-  const [state, setState, getState] = useImmer<State>({
-    foo: false 
-  },
-    '{{name}}Module'
+  const [state, setState] = useImmer<State>(
+    {
+      foo: false,
+    },
+    'AuthModule'
   );
   const actions = useActions<Actions>({
     test: () => {},
   });
 
-  return ( 
+  return (
     <Provider state={state} actions={actions}>
       {children}
     </Provider>
   );
 }
 
-export function use{{name}}Actions() {
+export function useAuthActions() {
   return useContext().actions;
 }
 
-export function use{{name}}State() {
+export function useAuthState() {
   return useContext().state;
 }
