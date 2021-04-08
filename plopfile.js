@@ -50,6 +50,36 @@ module.exports = function generate(plop) {
       },
     ],
   });
+  plop.setGenerator('feature2', {
+    prompts: [
+      {
+        type: 'input',
+        name: 'name',
+        message: 'choose feature name in camelCase (e.g. myFeature)',
+        basePath: '.',
+      },
+      {
+        type: 'input',
+        name: 'page',
+        message: 'choose page name in dash-case (e.g. my-page)',
+        basePath: '.',
+      },
+    ],
+    actions: [
+      {
+        type: 'addMany',
+        destination: path.join(__dirname, 'app/src/features'),
+        base: '.blueprints/feature2',
+        templateFiles: '.blueprints/feature2/**/**',
+      },
+      {
+        type: 'addMany',
+        destination: path.join(__dirname, 'app/src/pages'),
+        base: '.blueprints/page2',
+        templateFiles: '.blueprints/page2/**/**',
+      },
+    ],
+  });
 
   plop.setActionType('addToDbFile', function (answers, config, plop) {
     const targetPath = path.join(__dirname, 'api/src/db.ts');

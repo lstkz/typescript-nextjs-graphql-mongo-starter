@@ -77,9 +77,15 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type GetTestQueryVariables = Exact<{ [key: string]: never }>;
+export type GetLoginQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetTestQuery = { __typename?: 'Query' } & Pick<Query, 'ping'>;
+export type GetLoginQuery = { __typename?: 'Query' } & Pick<Query, 'ping'>;
+
+export type AppDataQueryVariables = Exact<{ [key: string]: never }>;
+
+export type AppDataQuery = { __typename?: 'Query' } & {
+  me: { __typename?: 'User' } & Pick<User, 'id' | 'username'>;
+};
 
 export type GetAllTodosQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -108,50 +114,103 @@ export const DefaultAuthResultFragmentDoc = gql`
     }
   }
 `;
-export const GetTestDocument = gql`
-  query GetTest {
+export const GetLoginDocument = gql`
+  query GetLogin {
     ping
   }
 `;
 
 /**
- * __useGetTestQuery__
+ * __useGetLoginQuery__
  *
- * To run a query within a React component, call `useGetTestQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetLoginQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLoginQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetTestQuery({
+ * const { data, loading, error } = useGetLoginQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetTestQuery(
-  baseOptions?: Apollo.QueryHookOptions<GetTestQuery, GetTestQueryVariables>
+export function useGetLoginQuery(
+  baseOptions?: Apollo.QueryHookOptions<GetLoginQuery, GetLoginQueryVariables>
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTestQuery, GetTestQueryVariables>(
-    GetTestDocument,
+  return Apollo.useQuery<GetLoginQuery, GetLoginQueryVariables>(
+    GetLoginDocument,
     options
   );
 }
-export function useGetTestLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<GetTestQuery, GetTestQueryVariables>
+export function useGetLoginLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetLoginQuery,
+    GetLoginQueryVariables
+  >
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTestQuery, GetTestQueryVariables>(
-    GetTestDocument,
+  return Apollo.useLazyQuery<GetLoginQuery, GetLoginQueryVariables>(
+    GetLoginDocument,
     options
   );
 }
-export type GetTestQueryHookResult = ReturnType<typeof useGetTestQuery>;
-export type GetTestLazyQueryHookResult = ReturnType<typeof useGetTestLazyQuery>;
-export type GetTestQueryResult = Apollo.QueryResult<
-  GetTestQuery,
-  GetTestQueryVariables
+export type GetLoginQueryHookResult = ReturnType<typeof useGetLoginQuery>;
+export type GetLoginLazyQueryHookResult = ReturnType<
+  typeof useGetLoginLazyQuery
+>;
+export type GetLoginQueryResult = Apollo.QueryResult<
+  GetLoginQuery,
+  GetLoginQueryVariables
+>;
+export const AppDataDocument = gql`
+  query AppData {
+    me {
+      id
+      username
+    }
+  }
+`;
+
+/**
+ * __useAppDataQuery__
+ *
+ * To run a query within a React component, call `useAppDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAppDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAppDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAppDataQuery(
+  baseOptions?: Apollo.QueryHookOptions<AppDataQuery, AppDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<AppDataQuery, AppDataQueryVariables>(
+    AppDataDocument,
+    options
+  );
+}
+export function useAppDataLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<AppDataQuery, AppDataQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<AppDataQuery, AppDataQueryVariables>(
+    AppDataDocument,
+    options
+  );
+}
+export type AppDataQueryHookResult = ReturnType<typeof useAppDataQuery>;
+export type AppDataLazyQueryHookResult = ReturnType<typeof useAppDataLazyQuery>;
+export type AppDataQueryResult = Apollo.QueryResult<
+  AppDataQuery,
+  AppDataQueryVariables
 >;
 export const GetAllTodosDocument = gql`
   query GetAllTodos {

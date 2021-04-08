@@ -1,13 +1,55 @@
 import '../styles/globals.css';
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider, gql } from '@apollo/client';
+import _NextApp, { AppContext, AppProps } from 'next/app';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 import { getApolloClient } from '../getApolloClient';
+import { AppDataDocument, AppDataQuery, User } from '../generated';
+import React from 'react';
+import { AuthModule } from '../components/AuthModule';
+import { GQL_FRAGMENTS } from '../fragments';
+
+config.autoAddCss = false;
 
 const client = getApolloClient();
 
-export default function App({ Component, pageProps }) {
+interface GlobalProps {
+  initialUser: User | null;
+}
+
+export default function App({
+  Component,
+  initialUser,
+  pageProps,
+}: AppProps & GlobalProps) {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <AuthModule initialUser={initialUser}>
+        <Component {...pageProps} />
+      </AuthModule>
     </ApolloProvider>
   );
 }
+
+gql`
+  query AppData {
+    me {
+      ...allUserProps
+    }
+  }
+`;
+
+App.getInitialProps = async ({ ctx }: AppContext) => {
+  const client = getApolloClient(ctx);
+  if (!client.hasAccessToken()) {
+    return {
+      initialUser: null,
+    };
+  }
+  const ret = await client.query<AppDataQuery>({
+    query: AppDataDocument,
+  });
+  return {
+    initialUser: ret.data.me,
+  };
+};

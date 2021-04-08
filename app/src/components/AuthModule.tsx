@@ -1,30 +1,32 @@
 import React from 'react';
 import { useImmer, createModuleContext, useActions } from 'context-api';
+import { User } from '../generated';
 
 interface Actions {
-  test: () => void;
+  logout: () => void;
 }
 
 interface State {
-  foo: boolean;
+  user: User | null;
 }
 
 const [Provider, useContext] = createModuleContext<State, Actions>();
 
 export interface AuthProps {
   children: React.ReactNode;
+  initialUser: User | null;
 }
 
 export function AuthModule(props: AuthProps) {
-  const { children } = props;
+  const { children, initialUser } = props;
   const [state, setState] = useImmer<State>(
     {
-      foo: false,
+      user: initialUser,
     },
     'AuthModule'
   );
   const actions = useActions<Actions>({
-    test: () => {},
+    logout: () => {},
   });
 
   return (
@@ -40,4 +42,7 @@ export function useAuthActions() {
 
 export function useAuthState() {
   return useContext().state;
+}
+export function useUser() {
+  return useAuthState().user;
 }
