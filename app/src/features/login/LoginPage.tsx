@@ -23,11 +23,11 @@ export function LoginPage(props: LoginSSRProps) {
   );
   return (
     <div tw="max-w-xl mx-auto mt-20">
-      <div css={tw`border border-gray-300 rounded-md p-4`}>
+      <div css={tw`border border-gray-300 rounded-md p-6 py-10`}>
         <h1 className="text-3xl text-center font-extrabold">Login</h1>
         <Input placeholder="login" tw="mt-10" />
         <Input placeholder="password" tw="mt-4" />
-        <Button type="primary" tw="mt-4">
+        <Button type="primary" tw="mt-4" block>
           Login
         </Button>
       </div>

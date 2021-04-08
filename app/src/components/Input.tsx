@@ -11,7 +11,7 @@ export function Input(props: InputProps) {
         type="text"
         css={[
           tw`border border-gray-300 rounded py-2 px-4 w-full text-gray-600 placeholder-gray-400`,
-          tw`focus:( outline-none ring-2 ring-blue-500   shadow-lg )`,
+          tw`focus:( outline-none ring-2 ring-indigo-400 shadow-lg focus:ring-offset-2)`,
         ]}
         {...rest}
       />
