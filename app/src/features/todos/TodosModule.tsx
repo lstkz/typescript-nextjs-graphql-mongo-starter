@@ -2,16 +2,31 @@ import React from 'react';
 import { gql } from '@apollo/client';
 import { InferGetServerSidePropsType } from 'next';
 import { useImmer, createModuleContext, useActions } from 'context-api';
-import { GetTodosDocument, GetTodosQuery, Todo } from '../../generated';
+import {
+  GetTodosDocument,
+  GetTodosQuery,
+  Todo,
+  useTodoCreatedSubscription,
+} from '../../generated';
 import { getApolloClient } from '../../getApolloClient';
 import { TodosPage } from './TodosPage';
 import { createGetServerSideProps } from '../../common/helper';
+import { useSubHandler } from '../../hooks/useSubHandler';
 
 interface Actions {}
 
 interface State {
   items: Todo[];
 }
+
+gql`
+  subscription TodoCreated {
+    todoCreated {
+      id
+      name
+    }
+  }
+`;
 
 const [Provider, useContext] = createModuleContext<State, Actions>();
 
@@ -23,6 +38,12 @@ export function TodosModule(props: TodosSSRProps) {
     },
     'TodosModule'
   );
+  useSubHandler(useTodoCreatedSubscription(), data => {
+    setState(draft => {
+      draft.items.push(data.todoCreated);
+    });
+  });
+  console.log(123);
   const actions = useActions<Actions>({});
 
   return (

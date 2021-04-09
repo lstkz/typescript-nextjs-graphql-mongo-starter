@@ -13,6 +13,10 @@ type Mutation {
   removeTodo(id: String!): Void
 }
 
+type Subscription {
+  todoCreated: Todo!
+}
+
 type AuthResult {
   token: String!
   user: User!

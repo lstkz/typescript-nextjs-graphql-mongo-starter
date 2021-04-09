@@ -26,5 +26,6 @@
     "typescript": "^4.2.3",
     "prettier": "^2.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {}
 }

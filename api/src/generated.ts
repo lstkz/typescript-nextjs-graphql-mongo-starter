@@ -69,6 +69,11 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  todoCreated: Todo;
+};
+
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
@@ -203,6 +208,7 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   RegisterInput: RegisterInput;
+  Subscription: ResolverTypeWrapper<{}>;
   Todo: ResolverTypeWrapper<Todo>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   User: ResolverTypeWrapper<User>;
@@ -218,6 +224,7 @@ export type ResolversParentTypes = {
   Query: {};
   Float: Scalars['Float'];
   RegisterInput: RegisterInput;
+  Subscription: {};
   Todo: Todo;
   ID: Scalars['ID'];
   User: User;
@@ -273,6 +280,18 @@ export type QueryResolvers<
   allTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
 };
 
+export type SubscriptionResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+> = {
+  todoCreated?: SubscriptionResolver<
+    ResolversTypes['Todo'],
+    'todoCreated',
+    ParentType,
+    ContextType
+  >;
+};
+
 export type TodoResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']
@@ -300,6 +319,7 @@ export type Resolvers<ContextType = any> = {
   AuthResult?: AuthResultResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Void?: GraphQLScalarType;

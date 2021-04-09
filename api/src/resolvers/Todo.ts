@@ -1,7 +1,9 @@
 import { UserInputError } from 'apollo-server-micro';
 import { ObjectID } from 'bson';
+import { withFilter } from 'graphql-subscriptions';
 import { TodoCollection, TodoModel } from '../collections/Todo';
-import { Resolvers } from '../types';
+import { pubsub } from '../pubsub';
+import { AppContext, Resolvers } from '../types';
 
 export const resolvers: Resolvers = {
   Mutation: {
@@ -13,10 +15,14 @@ export const resolvers: Resolvers = {
         userId: context.user._id,
       };
       await TodoCollection.insertOne(todo);
-      return {
+      const mapped = {
         id: todo._id.toHexString(),
         name: todo.name,
       };
+      await pubsub.publish('TODO_CREATED', {
+        todoCreated: mapped,
+      });
+      return mapped;
     },
     removeTodo: async (_, params, context) => {
       const id = ObjectID.createFromHexString(params.id);
@@ -41,6 +47,21 @@ export const resolvers: Resolvers = {
         id: item._id.toHexString(),
         name: item.name,
       }));
+    },
+  },
+  Subscription: {
+    todoCreated: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator(['TODO_CREATED']),
+        (payload, variables, context: AppContext) => {
+          console.log({
+            payload,
+            variables,
+            context,
+          });
+          return true;
+        }
+      ),
     },
   },
 };

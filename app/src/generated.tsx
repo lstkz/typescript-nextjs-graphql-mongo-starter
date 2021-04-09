@@ -63,6 +63,11 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  todoCreated: Todo;
+};
+
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
@@ -113,6 +118,12 @@ export type RemoveTodoMutation = { __typename?: 'Mutation' } & Pick<
   Mutation,
   'removeTodo'
 >;
+
+export type TodoCreatedSubscriptionVariables = Exact<{ [key: string]: never }>;
+
+export type TodoCreatedSubscription = { __typename?: 'Subscription' } & {
+  todoCreated: { __typename?: 'Todo' } & Pick<Todo, 'id' | 'name'>;
+};
 
 export type GetTodosQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -338,6 +349,46 @@ export type RemoveTodoMutationOptions = Apollo.BaseMutationOptions<
   RemoveTodoMutation,
   RemoveTodoMutationVariables
 >;
+export const TodoCreatedDocument = gql`
+  subscription TodoCreated {
+    todoCreated {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useTodoCreatedSubscription__
+ *
+ * To run a query within a React component, call `useTodoCreatedSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useTodoCreatedSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTodoCreatedSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTodoCreatedSubscription(
+  baseOptions?: Apollo.SubscriptionHookOptions<
+    TodoCreatedSubscription,
+    TodoCreatedSubscriptionVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useSubscription<
+    TodoCreatedSubscription,
+    TodoCreatedSubscriptionVariables
+  >(TodoCreatedDocument, options);
+}
+export type TodoCreatedSubscriptionHookResult = ReturnType<
+  typeof useTodoCreatedSubscription
+>;
+export type TodoCreatedSubscriptionResult = Apollo.SubscriptionResult<TodoCreatedSubscription>;
 export const GetTodosDocument = gql`
   query GetTodos {
     allTodos {
