@@ -1,10 +1,11 @@
+import * as R from 'remeda';
 import React from 'react';
 import { gql } from '@apollo/client';
 import { useImmer } from 'context-api';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useLoginMutation } from '../../generated';
+import { useRegisterMutation } from '../../generated';
 import { ContextInput } from '../../components/ContextInput';
 import tw from 'twin.macro';
 import { Button } from '../../components/Button';
@@ -24,35 +25,51 @@ interface FormValues {
   confirmPassword: string;
 }
 
-const schema = z.object({
-  username: z.string().nonempty({ message: 'Required' }),
-  password: z.string().nonempty({ message: 'Required' }),
-});
+const schema = z
+  .object({
+    email: z.string().nonempty({ message: 'Required' }).email(),
+    username: z.string().nonempty({ message: 'Required' }),
+    password: z
+      .string()
+      .nonempty({ message: 'Required' })
+      .min(5, 'Min 5 characters'),
+    confirmPassword: z.string().nonempty({ message: 'Required' }),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 gql`
-  mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
+  mutation Register($registerValues: RegisterInput!) {
+    register(values: $registerValues) {
       ...DefaultAuthResult
+    }
+  }
+  fragment DefaultAuthResult on AuthResult {
+    token
+    user {
+      ...allUserProps
     }
   }
 `;
 
-export function LoginPage() {
+export function RegisterPage() {
   const [state, setState] = useImmer<State>(
     {
       error: '',
     },
-    'LoginModule'
+    'RegisterModule'
   );
   const { error } = state;
   const formMethods = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
   const { handleSubmit } = formMethods;
-  const [login, { loading }] = useLoginMutation();
+  const [register, { loading }] = useRegisterMutation();
   const { loginUser } = useAuthActions();
   return (
-    <FormPage title="Login">
+    <FormPage title="Register">
       <FormProvider {...formMethods}>
         <form
           onSubmit={handleSubmit(async values => {
@@ -60,10 +77,12 @@ export function LoginPage() {
               draft.error = '';
             });
             try {
-              const ret = await login({
-                variables: values,
+              const ret = await register({
+                variables: {
+                  registerValues: R.omit(values, ['confirmPassword']),
+                },
               });
-              loginUser(ret.data!.login!);
+              loginUser(ret.data!.register!);
             } catch (e) {
               setState(draft => {
                 draft.error = e.message;
@@ -74,7 +93,13 @@ export function LoginPage() {
           <div css={tw`grid gap-4 mt-10`}>
             {error && <Alert>{error}</Alert>}
             <ContextInput label="Username" name="username" />
+            <ContextInput label="Email" name="email" />
             <ContextInput label="Password" name="password" type="password" />
+            <ContextInput
+              label="Confirm password"
+              name="confirmPassword"
+              type="password"
+            />
           </div>
           <Button
             loading={loading}
@@ -83,10 +108,10 @@ export function LoginPage() {
             htmlType="submit"
             tw="mt-4"
           >
-            Login
+            Register
           </Button>
           <div className="text-center mt-6 text-sm">
-            Not registered? Register <Link href="/register">here</Link>.
+            Already registered? Log in <Link href="/login">here</Link>.
           </div>
         </form>
       </FormProvider>

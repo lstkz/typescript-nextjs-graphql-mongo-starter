@@ -12,7 +12,7 @@ type Mutation {
 
 type AuthResult {
   token: String!
-  user: User
+  user: User!
 }
 
 type User {

@@ -7,6 +7,7 @@ import {
 import { GetServerSidePropsContext, NextPageContext } from 'next';
 import fetch from 'node-fetch';
 import { setContext } from '@apollo/client/link/context';
+import { getAccessToken } from './helper';
 
 export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
   public accessToken: string | null;
@@ -44,6 +45,9 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
   }
 
   getAccessToken() {
-    return this.ctx?.req?.headers?.['authorization'];
+    if (typeof document === 'undefined') {
+      return this.ctx?.req?.headers?.['authorization'];
+    }
+    return getAccessToken();
   }
 }

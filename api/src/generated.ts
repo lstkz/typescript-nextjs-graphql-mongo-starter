@@ -28,7 +28,7 @@ export type Scalars = {
 export type AuthResult = {
   __typename?: 'AuthResult';
   token: Scalars['String'];
-  user?: Maybe<User>;
+  user: User;
 };
 
 export type Message = {
@@ -236,7 +236,7 @@ export type AuthResultResolvers<
   ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']
 > = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
