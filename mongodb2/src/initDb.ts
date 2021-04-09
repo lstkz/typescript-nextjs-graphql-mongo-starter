@@ -1,7 +1,5 @@
 import { MongoClient, MongoClientOptions, TransactionOptions } from 'mongodb';
-import fs from 'fs';
 import * as R from 'remeda';
-import Path from 'path';
 import { initCreateCollection } from './createCollection';
 import { dbSessionStorage } from './dbSessionStorage';
 import { DbCollection } from './types';

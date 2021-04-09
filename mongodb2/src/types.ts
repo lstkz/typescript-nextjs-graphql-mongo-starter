@@ -1,5 +1,4 @@
 import {
-  MongoClient,
   FilterQuery,
   MongoCountPreferences,
   FindOneOptions,

@@ -14,13 +14,13 @@ export function Button(props: ButtonProps) {
     <div>
       <button
         css={[
-          tw`rounded-md px-4 py-2`,
+          tw`rounded-md px-4 py-2 transition-all`,
           tw`focus:( ring-indigo-400 outline-none ring-2 )`,
           block && tw`w-full`,
           type === 'primary' && [
-            tw`text-white bg-indigo-600 transition-all`,
-            tw`hover:( bg-indigo-700 )`,
-            tw`focus:( focus:ring-offset-2 bg-indigo-700 )`,
+            tw`text-white bg-indigo-500 `,
+            tw`hover:( bg-indigo-600 )`,
+            tw`focus:( focus:ring-offset-2 bg-indigo-600 )`,
           ],
         ]}
         type={htmlType}

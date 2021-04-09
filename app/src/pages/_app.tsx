@@ -1,13 +1,12 @@
 import '../styles/globals.css';
 import { ApolloProvider, gql } from '@apollo/client';
-import _NextApp, { AppContext, AppProps } from 'next/app';
+import { AppContext, AppProps } from 'next/app';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { getApolloClient } from '../getApolloClient';
 import { AppDataDocument, AppDataQuery, User } from '../generated';
 import React from 'react';
 import { AuthModule } from '../components/AuthModule';
-import { GQL_FRAGMENTS } from '../fragments';
 
 config.autoAddCss = false;
 
@@ -36,6 +35,10 @@ gql`
     me {
       ...allUserProps
     }
+  }
+  fragment allUserProps on User {
+    id
+    username
   }
 `;
 

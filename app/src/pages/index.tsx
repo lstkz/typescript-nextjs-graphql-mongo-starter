@@ -1,103 +1,13 @@
-import { gql } from '@apollo/client';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
-import {
-  GetAllTodosDocument,
-  GetAllTodosQuery,
-  useLoginMutation,
-} from '../generated';
-import { getApolloClient } from '../getApolloClient';
+import Link from 'next/link';
+import React from 'react';
+import 'twin.macro';
 
-gql`
-  query GetAllTodos {
-    ping
-  }
-
-  # mutation addTest($a: Int!, $b: Int!) {
-  #   addNumber(a: $a, b: $b)
-  # }
-
-  # mutation createMessage($data: MessageInput!) {
-  #   createMessage(data: $data)
-  # }
-
-  # mutation createMessage2($data: MessageInput!) {
-  #   createMessage2(data: $data) {
-  #     id
-  #     content
-  #     author
-  #   }
-  # }
-
-  fragment defaultAuthResult on AuthResult {
-    token
-    user {
-      id
-      username
-    }
-  }
-
-  mutation login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-      ...defaultAuthResult
-    }
-  }
-`;
-
-export default function Home(
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
-  // const { allTodos } = props;
-  // const [addTest] = useAddTestMutation();
-  // const [createMessage] = useCreateMessageMutation();
-  // createMessage({
-  //   variables: {
-  //     data: {
-  //       author: 'aa',
-  //     },
-  //   },
-  // }).then((ret) => {});
-
-  // const [login] = useLoginMutation();
-  // login({
-  //   variables: {
-  //     password: '',
-  //     username: '',
-  //   },
-  // });
-
+export default function Home() {
   return (
-    <div>
-      <button
-        onClick={() => {
-          // addTest({
-          //   variables: {
-          //     a: 2,
-          //     b: 2,
-          //   },
-          // })
-          //   .then(ret => {
-          //     console.log(ret.data.addNumber);
-          //   })
-          //   .catch(e => {
-          //     alert(e.message);
-          //   });
-        }}
-      >
-        click
-      </button>
-      {/* {allTodos.map(todo => (
-        <div key={todo.todoId}>{todo.description}</div>
-      ))} */}
+    <div tw="p-10">
+      <Link href="/todos">Example todos</Link>
+      <br />
+      <Link href="/register">register</Link>
     </div>
   );
 }
-
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const client = getApolloClient(ctx);
-  const ret = await client.query<GetAllTodosQuery>({
-    query: GetAllTodosDocument,
-  });
-  return {
-    props: ret.data,
-  };
-};

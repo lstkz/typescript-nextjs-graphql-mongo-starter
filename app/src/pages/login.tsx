@@ -1,4 +1,1 @@
-export {
-  LoginPage as default,
-  getServerSideProps,
-} from '../features/login/LoginPage';
+export { LoginPage as default } from '../features/login/LoginPage';

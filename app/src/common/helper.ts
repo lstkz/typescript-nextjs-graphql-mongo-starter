@@ -15,7 +15,6 @@ export const createGetServerSideProps: <T>(
     return await fn(context);
   } catch (e) {
     const status = e.res?.status;
-    console.log({ e });
     if (status == 401) {
       context.res.setHeader(
         'Set-Cookie',
