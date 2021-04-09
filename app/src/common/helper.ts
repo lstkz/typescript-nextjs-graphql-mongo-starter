@@ -1,4 +1,5 @@
 import { GetServerSideProps } from 'next';
+import { createCookie, readCookie, removeCookie } from './cookie';
 
 export class UnreachableCaseError extends Error {
   constructor(val: never) {
@@ -29,4 +30,16 @@ export const createGetServerSideProps: <T>(
     }
     throw e;
   }
+};
+
+export const getAccessToken = () => {
+  return readCookie('token');
+};
+
+export const setAccessToken = (token: string) => {
+  createCookie('token', token);
+};
+
+export const clearAccessToken = () => {
+  removeCookie('token');
 };

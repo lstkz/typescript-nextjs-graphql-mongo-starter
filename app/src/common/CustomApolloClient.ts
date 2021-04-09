@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 import { setContext } from '@apollo/client/link/context';
 
 export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
-  public accessToken: string;
+  public accessToken: string | null;
   private ctx?: GetServerSidePropsContext | NextPageContext;
 
   constructor(ctx?: GetServerSidePropsContext | NextPageContext) {
@@ -35,6 +35,7 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
       link: authLink.concat(httpLink),
       cache: new InMemoryCache(),
     });
+    this.accessToken = null;
     this.ctx = ctx;
   }
 

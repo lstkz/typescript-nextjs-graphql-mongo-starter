@@ -3,8 +3,8 @@ import { CustomDbCollection, DbCollection } from './types';
 import { dbSessionStorage } from './dbSessionStorage';
 
 function _pick(obj: any, fields: any[]) {
-  const ret = {};
-  fields.forEach((field) => {
+  const ret: any = {};
+  fields.forEach(field => {
     ret[field] = obj[field];
   });
   return ret;
@@ -55,7 +55,7 @@ export function initCreateCollection(getDb: () => Db) {
       deleteOne(...args) {
         return exec('deleteOne', 2, args);
       },
-      distinct(...args) {
+      distinct(...args: any[]) {
         return exec('distinct', 3, args);
       },
       drop(...args) {
@@ -67,7 +67,7 @@ export function initCreateCollection(getDb: () => Db) {
       estimatedDocumentCount(...args) {
         return exec('estimatedDocumentCount', 2, args);
       },
-      find(...args) {
+      find(...args: any[]) {
         return exec('find', 2, args);
       },
       findOne(...args) {
@@ -136,7 +136,7 @@ export function initCreateCollection(getDb: () => Db) {
       updateOne(...args) {
         return exec('updateOne', 3, args);
       },
-      watch(...args) {
+      watch(...args: any[]) {
         return exec('watch', Array.isArray(args[0]) ? 2 : 1, args);
       },
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useImmer, createModuleContext, useActions } from 'context-api';
 import { User } from '../generated';
+import { clearAccessToken } from '../common/helper';
+import { useRouter } from 'next/dist/client/router';
 
 interface Actions {
   logout: () => void;
@@ -19,14 +21,19 @@ export interface AuthProps {
 
 export function AuthModule(props: AuthProps) {
   const { children, initialUser } = props;
-  const [state, setState] = useImmer<State>(
+  const [state] = useImmer<State>(
     {
       user: initialUser,
     },
     'AuthModule'
   );
+  const router = useRouter();
+
   const actions = useActions<Actions>({
-    logout: () => {},
+    logout: () => {
+      clearAccessToken();
+      void router.push('/');
+    },
   });
 
   return (

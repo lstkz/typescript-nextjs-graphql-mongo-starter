@@ -2,7 +2,7 @@ import React from 'react';
 import tw from 'twin.macro';
 
 interface ButtonProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   type: 'primary';
   htmlType?: 'submit';
   block?: boolean;

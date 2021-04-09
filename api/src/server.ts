@@ -15,7 +15,7 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: async ({ req }: { req: MicroRequest }): Promise<AppContext> => {
     const token = req.headers['authorization'];
-    let user: UserModel = null;
+    let user: UserModel = null!;
     if (token) {
       const existing = await AccessTokenCollection.findById(token);
       if (!existing) {
