@@ -40,6 +40,7 @@ export function AuthModule(props: AuthProps) {
       setState(draft => {
         draft.user = data.user;
       });
+      void router.push('/');
     },
   });
 
@@ -58,5 +59,5 @@ export function useAuthState() {
   return useContext().state;
 }
 export function useUser() {
-  return useAuthState().user;
+  return useAuthState().user!;
 }

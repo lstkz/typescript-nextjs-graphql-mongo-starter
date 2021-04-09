@@ -9,6 +9,7 @@ interface ButtonProps
   block?: boolean;
   icon?: React.ReactNode;
   loading?: boolean;
+  size?: 'small';
 }
 
 export function Button(props: ButtonProps) {
@@ -20,6 +21,7 @@ export function Button(props: ButtonProps) {
     icon,
     children,
     disabled,
+    size,
     ...rest
   } = props;
 
@@ -48,6 +50,7 @@ export function Button(props: ButtonProps) {
           tw`focus:( focus:ring-offset-2 bg-indigo-600 )`,
           isDisabled && tw`bg-indigo-400!`,
         ],
+        size === 'small' && tw`text-sm px-2 py-1 rounded`,
       ]}
       type={htmlType}
       {...rest}

@@ -3,11 +3,14 @@ scalar Void
 type Query {
   me: User!
   ping: Float!
+  allTodos: [Todo!]!
 }
 
 type Mutation {
   login(username: String!, password: String!): AuthResult
   register(values: RegisterInput!): AuthResult
+  addTodo(name: String!): Todo
+  removeTodo(id: String!): Void
 }
 
 type AuthResult {
@@ -20,25 +23,13 @@ type User {
   username: String!
 }
 
-type TodoMVC {
-  todoId: ID!
-  completed: Boolean!
-  description: String!
-}
-
-input MessageInput {
-  content: String
-  author: String
+type Todo {
+  id: ID!
+  name: String!
 }
 
 input RegisterInput {
   username: String!
   email: String!
   password: String!
-}
-
-type Message {
-  id: String!
-  content: String!
-  author: String!
 }

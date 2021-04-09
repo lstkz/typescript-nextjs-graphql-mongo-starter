@@ -8,6 +8,7 @@ import { GetServerSidePropsContext, NextPageContext } from 'next';
 import fetch from 'node-fetch';
 import { setContext } from '@apollo/client/link/context';
 import { getAccessToken } from './helper';
+import { readCookieFromString } from './cookie';
 
 export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
   public accessToken: string | null;
@@ -22,6 +23,7 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
     });
 
     const authLink = setContext((_, { headers }) => {
+      console.log('token', this.getAccessToken());
       if (!this.hasAccessToken()) {
         return headers;
       }
@@ -46,7 +48,10 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
 
   getAccessToken() {
     if (typeof document === 'undefined') {
-      return this.ctx?.req?.headers?.['authorization'];
+      return readCookieFromString(
+        this.ctx?.req?.headers['cookie'] ?? '',
+        'token'
+      );
     }
     return getAccessToken();
   }

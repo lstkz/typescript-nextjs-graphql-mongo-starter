@@ -17,12 +17,7 @@ type State = {
   error: string;
 };
 
-interface FormValues {
-  email: string;
-  username: string;
-  password: string;
-  confirmPassword: string;
-}
+type FormValues = z.infer<typeof schema>;
 
 const schema = z.object({
   username: z.string().nonempty({ message: 'Required' }),

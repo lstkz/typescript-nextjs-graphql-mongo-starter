@@ -13,7 +13,7 @@ export function ContextInput(props: ContextInputProps) {
     name,
   });
   return (
-    <div>
+    <div className="w-full">
       <Input
         {...rest}
         name={name}

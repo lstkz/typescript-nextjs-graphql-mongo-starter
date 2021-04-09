@@ -31,22 +31,12 @@ export type AuthResult = {
   user: User;
 };
 
-export type Message = {
-  __typename?: 'Message';
-  id: Scalars['String'];
-  content: Scalars['String'];
-  author: Scalars['String'];
-};
-
-export type MessageInput = {
-  content?: Maybe<Scalars['String']>;
-  author?: Maybe<Scalars['String']>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
   login?: Maybe<AuthResult>;
   register?: Maybe<AuthResult>;
+  addTodo?: Maybe<Todo>;
+  removeTodo?: Maybe<Scalars['Void']>;
 };
 
 export type MutationLoginArgs = {
@@ -58,10 +48,19 @@ export type MutationRegisterArgs = {
   values: RegisterInput;
 };
 
+export type MutationAddTodoArgs = {
+  name: Scalars['String'];
+};
+
+export type MutationRemoveTodoArgs = {
+  id: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   me: User;
   ping: Scalars['Float'];
+  allTodos: Array<Todo>;
 };
 
 export type RegisterInput = {
@@ -70,11 +69,10 @@ export type RegisterInput = {
   password: Scalars['String'];
 };
 
-export type TodoMvc = {
-  __typename?: 'TodoMVC';
-  todoId: Scalars['ID'];
-  completed: Scalars['Boolean'];
-  description: Scalars['String'];
+export type Todo = {
+  __typename?: 'Todo';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type User = {
@@ -201,34 +199,30 @@ export type DirectiveResolverFn<
 export type ResolversTypes = {
   AuthResult: ResolverTypeWrapper<AuthResult>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  Message: ResolverTypeWrapper<Message>;
-  MessageInput: MessageInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   RegisterInput: RegisterInput;
-  TodoMVC: ResolverTypeWrapper<TodoMvc>;
+  Todo: ResolverTypeWrapper<Todo>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   User: ResolverTypeWrapper<User>;
   Void: ResolverTypeWrapper<Scalars['Void']>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   AuthResult: AuthResult;
   String: Scalars['String'];
-  Message: Message;
-  MessageInput: MessageInput;
   Mutation: {};
   Query: {};
   Float: Scalars['Float'];
   RegisterInput: RegisterInput;
-  TodoMVC: TodoMvc;
+  Todo: Todo;
   ID: Scalars['ID'];
-  Boolean: Scalars['Boolean'];
   User: User;
   Void: Scalars['Void'];
+  Boolean: Scalars['Boolean'];
 };
 
 export type AuthResultResolvers<
@@ -237,16 +231,6 @@ export type AuthResultResolvers<
 > = {
   token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MessageResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']
-> = {
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  author?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -266,6 +250,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationRegisterArgs, 'values'>
   >;
+  addTodo?: Resolver<
+    Maybe<ResolversTypes['Todo']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddTodoArgs, 'name'>
+  >;
+  removeTodo?: Resolver<
+    Maybe<ResolversTypes['Void']>,
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveTodoArgs, 'id'>
+  >;
 };
 
 export type QueryResolvers<
@@ -274,15 +270,15 @@ export type QueryResolvers<
 > = {
   me?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   ping?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  allTodos?: Resolver<Array<ResolversTypes['Todo']>, ParentType, ContextType>;
 };
 
-export type TodoMvcResolvers<
+export type TodoResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes['TodoMVC'] = ResolversParentTypes['TodoMVC']
+  ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']
 > = {
-  todoId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  completed?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -302,10 +298,9 @@ export interface VoidScalarConfig
 
 export type Resolvers<ContextType = any> = {
   AuthResult?: AuthResultResolvers<ContextType>;
-  Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  TodoMVC?: TodoMvcResolvers<ContextType>;
+  Todo?: TodoResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   Void?: GraphQLScalarType;
 };

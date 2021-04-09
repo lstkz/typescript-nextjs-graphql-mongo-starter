@@ -15,8 +15,8 @@ export const createGetServerSideProps: <T>(
   try {
     return await fn(context);
   } catch (e) {
-    const status = e.res?.status;
-    if (status == 401) {
+    const code = e?.graphQLErrors?.[0].extensions?.code;
+    if (code === 'UNAUTHENTICATED') {
       context.res.setHeader(
         'Set-Cookie',
         'token=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'

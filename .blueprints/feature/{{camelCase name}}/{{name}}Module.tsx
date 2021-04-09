@@ -1,6 +1,6 @@
 import React from 'react';
 import { gql } from '@apollo/client';
-import { InferGetServerSidePropsType, GetServerSidePropsContext } from 'next'
+import { InferGetServerSidePropsType } from 'next'
 import { useImmer, createModuleContext, useActions } from 'context-api';
 import {
   Get{{name}}Document,
