@@ -11,6 +11,12 @@ Stack:
 - Graphql
 - Mongodb
 
+## Starter features
+
+- Example authorization login/register.
+- Graphql subscriptions.
+- Example todo list CRUD.
+
 ## Requirements
 
 - node v14.16 https://nodejs.org/
