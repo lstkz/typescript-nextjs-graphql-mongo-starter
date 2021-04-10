@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start"
   },
+  "license": "MIT",
   "dependencies": {
     "@apollo/client": "^3.3.13",
     "@apollo/react-components": "^4.0.0",

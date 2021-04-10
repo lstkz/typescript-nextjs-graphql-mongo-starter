@@ -6,12 +6,15 @@ import {
   GetTodosDocument,
   GetTodosQuery,
   Todo,
-  useTodoCreatedSubscription,
+  TodoCreatedDocument,
+  TodoCreatedSubscription,
+  TodoRemovedDocument,
+  TodoRemovedSubscription,
 } from '../../generated';
 import { getApolloClient } from '../../getApolloClient';
 import { TodosPage } from './TodosPage';
 import { createGetServerSideProps } from '../../common/helper';
-import { useSubHandler } from '../../hooks/useSubHandler';
+import { useSubscription } from '../../hooks/useSubscription';
 
 interface Actions {}
 
@@ -20,11 +23,25 @@ interface State {
 }
 
 gql`
+  query GetTodos {
+    allTodos {
+      ...allTodoFields
+    }
+  }
   subscription TodoCreated {
     todoCreated {
-      id
-      name
+      ...allTodoFields
     }
+  }
+  subscription TodoRemoved {
+    todoRemoved {
+      ...allTodoFields
+    }
+  }
+  fragment allTodoFields on Todo {
+    id
+    userId
+    name
   }
 `;
 
@@ -32,18 +49,22 @@ const [Provider, useContext] = createModuleContext<State, Actions>();
 
 export function TodosModule(props: TodosSSRProps) {
   const { allTodos } = props;
-  const [state, setState, getState] = useImmer<State>(
+  const [state, setState] = useImmer<State>(
     {
       items: allTodos,
     },
     'TodosModule'
   );
-  useSubHandler(useTodoCreatedSubscription(), data => {
+  useSubscription<TodoCreatedSubscription>(TodoCreatedDocument, data => {
     setState(draft => {
       draft.items.push(data.todoCreated);
     });
   });
-  console.log(123);
+  useSubscription<TodoRemovedSubscription>(TodoRemovedDocument, data => {
+    setState(draft => {
+      draft.items = draft.items.filter(item => item.id !== data.todoRemoved.id);
+    });
+  });
   const actions = useActions<Actions>({});
 
   return (
@@ -64,15 +85,6 @@ export function useTodosState() {
 export type TodosSSRProps = InferGetServerSidePropsType<
   typeof getServerSideProps
 >;
-
-gql`
-  query GetTodos {
-    allTodos {
-      id
-      name
-    }
-  }
-`;
 
 export const getServerSideProps = createGetServerSideProps(async ctx => {
   const client = getApolloClient(ctx);

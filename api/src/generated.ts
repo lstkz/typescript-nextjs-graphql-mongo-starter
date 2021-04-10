@@ -72,11 +72,13 @@ export type RegisterInput = {
 export type Subscription = {
   __typename?: 'Subscription';
   todoCreated: Todo;
+  todoRemoved: Todo;
 };
 
 export type Todo = {
   __typename?: 'Todo';
   id: Scalars['ID'];
+  userId: Scalars['ID'];
   name: Scalars['String'];
 };
 
@@ -290,6 +292,12 @@ export type SubscriptionResolvers<
     ParentType,
     ContextType
   >;
+  todoRemoved?: SubscriptionResolver<
+    ResolversTypes['Todo'],
+    'todoRemoved',
+    ParentType,
+    ContextType
+  >;
 };
 
 export type TodoResolvers<
@@ -297,6 +305,7 @@ export type TodoResolvers<
   ParentType extends ResolversParentTypes['Todo'] = ResolversParentTypes['Todo']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

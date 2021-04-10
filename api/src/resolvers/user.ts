@@ -5,8 +5,7 @@ export const resolvers: Resolvers = {
   Mutation: {},
   Query: {
     me: (_, __, context) => {
-      context.ensureLoggedIn();
-      return mapUser(context.user);
+      return mapUser(context.getUser());
     },
     ping: () => Date.now(),
   },

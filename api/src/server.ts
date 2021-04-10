@@ -1,4 +1,4 @@
-import { ApolloServer, AuthenticationError } from 'apollo-server-micro';
+import { ApolloServer, AuthenticationError } from 'apollo-server';
 import 'graphql-import-node';
 import util from 'util';
 import typeDefs from './schema.graphql';
@@ -7,18 +7,13 @@ import { connect } from './db';
 import { AppContext } from './types';
 import { UserCollection, UserModel } from './collections/User';
 import { MicroRequest } from 'apollo-server-micro/dist/types';
-import { ServerResponse } from 'http';
 import { AccessTokenCollection } from './collections/AccessToken';
 
 const apolloServer = new ApolloServer({
   subscriptions: {
     path: '/subscriptions',
-    onConnect: (connectionParams, webSocket, context) => {
-      console.log('Connected!', { connectionParams, context });
+    onConnect: connectionParams => {
       return connectionParams;
-    },
-    onDisconnect: (webSocket, context) => {
-      console.log('Disconnected!');
     },
   },
   typeDefs,
@@ -30,9 +25,6 @@ const apolloServer = new ApolloServer({
     req: MicroRequest;
     connection: any;
   }): Promise<AppContext> => {
-    if (connection) {
-      console.log('create context', connection);
-    }
     const token = connection
       ? connection.context.authorization
       : req.headers['authorization'];
@@ -45,11 +37,14 @@ const apolloServer = new ApolloServer({
       user = await UserCollection.findByIdOrThrow(existing.userId);
     }
     return {
-      user,
-      ensureLoggedIn: () => {
+      getUser: () => {
         if (!user) {
           throw new AuthenticationError('Access token required');
         }
+        return user;
+      },
+      getUserOrAnonymous: () => {
+        return user;
       },
     };
   },
@@ -59,25 +54,18 @@ const apolloServer = new ApolloServer({
   },
 });
 
-let isInited = false;
-async function init() {
-  if (isInited) {
-    return;
-  }
-  isInited = true;
+async function start() {
   await connect();
+  await apolloServer
+    .listen({
+      port: process.env.PORT ?? 4000,
+    })
+    .then(({ url }) => {
+      console.log(`🚀  Server ready at ${url} in ${process.env.NODE_ENV} mode`);
+    });
 }
 
-async function start(req: any, res: any, next: any) {
-  await init();
-
-  if (!res.socket.server.apolloServer) {
-    apolloServer.installSubscriptionHandlers(res.socket.server);
-    const handler = apolloServer.createHandler({ path: '/api/graphql' });
-    res.socket.server.apolloServer = handler;
-  }
-
-  return res.socket.server.apolloServer(req, res, next);
-}
-
-export default start;
+start().catch(e => {
+  console.error(e);
+  process.exit(1);
+});

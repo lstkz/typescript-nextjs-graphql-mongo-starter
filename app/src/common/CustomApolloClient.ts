@@ -12,8 +12,7 @@ import { setContext } from '@apollo/client/link/context';
 import { getAccessToken } from './helper';
 import { readCookieFromString } from './cookie';
 import { getMainDefinition } from '@apollo/client/utilities';
-
-const IS_SSR = typeof document === 'undefined';
+import { API_URL, IS_SSR } from '../config';
 
 export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
   public accessToken: string | null;
@@ -21,7 +20,7 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
 
   constructor(ctx?: GetServerSidePropsContext | NextPageContext) {
     const httpLink = new HttpLink({
-      uri: (IS_SSR ? 'http://localhost:3000' : '') + '/api/graphql',
+      uri: API_URL + '/api/graphql',
       fetch: fetch as any,
     });
 
@@ -40,7 +39,7 @@ export class CustomApolloClient extends ApolloClient<NormalizedCacheObject> {
     const wsLink = IS_SSR
       ? null
       : new WebSocketLink({
-          uri: 'ws://localhost:3000/subscriptions',
+          uri: API_URL.replace(/^http/, 'ws') + '/subscriptions',
           options: {
             reconnect: true,
             connectionParams: () => ({

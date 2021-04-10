@@ -15,6 +15,7 @@ type Mutation {
 
 type Subscription {
   todoCreated: Todo!
+  todoRemoved: Todo!
 }
 
 type AuthResult {
@@ -29,6 +30,7 @@ type User {
 
 type Todo {
   id: ID!
+  userId: ID!
   name: String!
 }
 

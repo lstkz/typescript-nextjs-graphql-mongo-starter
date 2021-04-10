@@ -5,5 +5,6 @@
   "dependencies": {
     "immer": "^9.0.1"
   },
+  "license": "MIT",
   "devDependencies": {}
 }

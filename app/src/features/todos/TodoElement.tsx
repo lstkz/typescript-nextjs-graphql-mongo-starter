@@ -26,7 +26,7 @@ export function TodoElement(props: TodoElementProps) {
       <div>{item.name}</div>
       <button
         onClick={() => {
-          removeTodo({
+          void removeTodo({
             variables: { id: item.id },
           });
         }}
